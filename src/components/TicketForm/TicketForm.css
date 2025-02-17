@@ -1,0 +1,91 @@
+.ticket-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .ticket-form-container {
+    margin-top: 80px; /* Ajuste cette valeur selon la hauteur de ta navbar */
+  }
+  
+  .input-group {
+    margin-bottom: 20px;
+  }
+  
+  .input-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .input-group input,
+  .input-group textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .input-group textarea {
+    height: 100px;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .button-group input {
+    flex-grow: 1;
+  }
+  
+  .button-group button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .button-group button:hover {
+    background-color: #0056b3;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  ul li {
+    background-color: #f8f9fa;
+    padding: 5px;
+    margin: 5px 0;
+    border-radius: 4px;
+  }
+  
+  input[type="datetime-local"] {
+    width: 100%;
+  }
+  
+  input[type="text"],
+  textarea {
+    width: 100%;
+  }
+  
+  input[type="text"] {
+    width: calc(100% - 110px); /* La largeur du champ texte moins l'espace pour le bouton */
+  }
+  
+  .ticket-form-container {
+    position: relative; /* Pour éviter que le formulaire influence d'autres éléments */
+    z-index: 1; /* Assure que la navbar reste en avant */
+  }
+
+  /* TicketForm.css */
+.ticket-form {
+    z-index: 0; /* Assure que le formulaire est sous la navbar */
+    position: relative;
+    margin-top: 80px;  /* Ou toute autre valeur pour l'espacement */
+  }

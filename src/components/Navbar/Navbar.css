@@ -1,0 +1,8 @@
+/* Navbar.css */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1050; /* S'assurer que la navbar reste toujours visible */
+    background-color: #f8f9fa; /* Si tu utilises une couleur de fond */
+    width: 100%;
+  }
