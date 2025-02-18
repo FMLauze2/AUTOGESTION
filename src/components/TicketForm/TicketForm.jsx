@@ -5,20 +5,12 @@ const TicketForm = () => {
   const [formData, setFormData] = useState({
     titreTicket: '',
     dateHeure: '',
-    nomClient: '',
-    praticiens: [],
-    postes: [],
+    nomClient: '',   
     descriptionInstallation: '',
-    etapesSuivies: '',
-    fournisseurLecteurs: '',
-    posteServeur: '',
-    sauvegardeDonnees: '',
-    versionInstallee: '',
-    typeLecteurs: ''
+    etapesSuivies: ''    
   });
 
-  const [praticienInput, setPraticienInput] = useState('');
-  const [posteInput, setPosteInput] = useState('');
+
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -28,46 +20,50 @@ const TicketForm = () => {
     });
   };
 
-  const addPraticien = () => {
-    if (praticienInput) {
-      setFormData({
-        ...formData,
-        praticiens: [...formData.praticiens, praticienInput]
-      });
-      setPraticienInput('');
-    }
-  };
+  async function createTicket(ticketData) {
+    try {
+        const response = await fetch("http://localhost:5000/create-ticket", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(ticketData)
+        });
 
-  const addPoste = () => {
-    if (posteInput) {
-      setFormData({
-        ...formData,
-        postes: [...formData.postes, posteInput]
-      });
-      setPosteInput('');
+        const data = await response.json(); // Essayer d'extraire la réponse
+        if (!response.ok) {
+            throw new Error(`Erreur serveur: ${response.status} - ${data.error || 'Aucune info'}`);
+        }
+
+        console.log("Ticket créé:", data);
+    } catch (error) {
+        console.error("Erreur lors de la création du ticket:", error.message);
     }
-  };
+}
+
+
+
+
 
   const handleReset = () => {
     setFormData({
       titreTicket: '',
       dateHeure: '',
       nomClient: '',
-      praticiens: [],
-      postes: [],
       descriptionInstallation: '',
-      etapesSuivies: '',
-      fournisseurLecteurs: '',
-      posteServeur: '',
-      sauvegardeDonnees: '',
-      versionInstallee: '',
-      typeLecteurs: ''
+      etapesSuivies: ''      
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Form submitted:', formData);
+    try {
+      console.log("📨 Envoi des données:", formData);
+      await createTicket(formData); // 🔹 Envoi au backend
+      handleReset(); // 🔹 Réinitialisation du formulaire après soumission réussie
+    } catch (error) {
+      console.error("❌ Erreur lors de l'envoi:", error);
+    }
   };
 
   return (
@@ -83,6 +79,7 @@ const TicketForm = () => {
             className="form-control w-100"
             value={formData.titreTicket}
             onChange={handleInputChange}
+            required
           />
         </div>
 
@@ -95,6 +92,7 @@ const TicketForm = () => {
             className="form-control w-100"
             value={formData.dateHeure}
             onChange={handleInputChange}
+            required
           />
         </div>
 
@@ -107,29 +105,11 @@ const TicketForm = () => {
             className="form-control w-100"
             value={formData.nomClient}
             onChange={handleInputChange}
+            required
           />
         </div>
 
-        <div className="mb-3">
-          <label htmlFor="praticiens" className="form-label">Liste des praticiens</label>
-          <div className="d-flex">
-            <input
-              type="text"
-              id="praticienInput"
-              className="form-control w-75 me-2"
-              value={praticienInput}
-              onChange={(e) => setPraticienInput(e.target.value)}
-            />
-            <button type="button" className="btn btn-primary" onClick={addPraticien}>Ajouter</button>
-          </div>
-          <ul className="list-unstyled mt-2">
-            {formData.praticiens.map((praticien, index) => (
-              <li key={index} className="bg-light p-2 mb-2 rounded">{praticien}</li>
-            ))}
-          </ul>
-        </div>
-       
-
+        {/* Description de l'installation */}
         <div className="mb-3">
           <label htmlFor="descriptionInstallation" className="form-label">Description de l'installation</label>
           <textarea
@@ -138,9 +118,11 @@ const TicketForm = () => {
             className="form-control w-100"
             value={formData.descriptionInstallation}
             onChange={handleInputChange}
+            required
           />
         </div>
 
+        {/* Étapes suivies */}
         <div className="mb-3">
           <label htmlFor="etapesSuivies" className="form-label">Étapes suivies</label>
           <textarea
@@ -149,88 +131,9 @@ const TicketForm = () => {
             className="form-control w-100"
             value={formData.etapesSuivies}
             onChange={handleInputChange}
+            required
           />
         </div>
-
-        <div className="mb-3">
-          <label htmlFor="fournisseurLecteurs" className="form-label">Fournisseur des lecteurs</label>
-          <input
-            type="text"
-            id="fournisseurLecteurs"
-            name="fournisseurLecteurs"
-            className="form-control w-100"
-            value={formData.fournisseurLecteurs}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="postes" className="form-label">Liste des postes</label>
-          <div className="d-flex">
-            <input
-              type="text"
-              id="posteInput"
-              className="form-control w-75 me-2"
-              value={posteInput}
-              onChange={(e) => setPosteInput(e.target.value)}
-            />
-            <button type="button" className="btn btn-primary" onClick={addPoste}>Ajouter</button>
-          </div>
-          <ul className="list-unstyled mt-2">
-            {formData.postes.map((poste, index) => (
-              <li key={index} className="bg-light p-2 mb-2 rounded">{poste}</li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="posteServeur" className="form-label">Poste serveur</label>
-          <input
-            type="text"
-            id="posteServeur"
-            name="posteServeur"
-            className="form-control w-100"
-            value={formData.posteServeur}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="sauvegardeDonnees" className="form-label">Sauvegarde des données</label>
-          <input
-            type="text"
-            id="sauvegardeDonnees"
-            name="sauvegardeDonnees"
-            className="form-control w-100"
-            value={formData.sauvegardeDonnees}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="typeLecteurs" className="form-label">Type de lecteurs</label>
-          <input
-            type="text"
-            id="typeLecteurs"
-            name="typeLecteurs"
-            className="form-control w-100"
-            value={formData.typeLecteurs}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="versionInstallee" className="form-label">Version installée</label>
-          <input
-            type="text"
-            id="versionInstallee"
-            name="versionInstallee"
-            className="form-control w-100"
-            value={formData.versionInstallee}
-            onChange={handleInputChange}
-          />
-        </div>
-
         <div className="mb-3">
           <div className="d-flex justify-content-between">
             <button type="submit" className="btn btn-success">Soumettre</button>
@@ -238,7 +141,7 @@ const TicketForm = () => {
           </div>
         </div>
       </form>
-    </div>
+    </div>  
   );
 };
 
