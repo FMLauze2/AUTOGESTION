@@ -6,7 +6,7 @@ const TicketForm = () => {
     titreTicket: '',
     dateHeure: '',
     nomClient: '',   
-    descriptionInstallation: '',
+    descriptionTicket: '',
     etapesSuivies: ''    
   });
 
@@ -50,7 +50,7 @@ const TicketForm = () => {
       titreTicket: '',
       dateHeure: '',
       nomClient: '',
-      descriptionInstallation: '',
+      descriptionTicket: '',
       etapesSuivies: ''      
     });
   };
@@ -111,12 +111,12 @@ const TicketForm = () => {
 
         {/* Description de l'installation */}
         <div className="mb-3">
-          <label htmlFor="descriptionInstallation" className="form-label">Description de l'installation</label>
+          <label htmlFor="descriptionTicket" className="form-label">Description de l'installation</label>
           <textarea
-            id="descriptionInstallation"
-            name="descriptionInstallation"
+            id="descriptionTicket"
+            name="descriptionTicket"
             className="form-control w-100"
-            value={formData.descriptionInstallation}
+            value={formData.descriptionTicket}
             onChange={handleInputChange}
             required
           />

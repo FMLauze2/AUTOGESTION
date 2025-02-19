@@ -33,8 +33,9 @@ module.exports = db;
 app.post('/create-ticket', async (req, res) => {
   const ticketData = req.body; // Récupère les données envoyées depuis le frontend
   try {
-    console.log(req.body); // Vérifier si les données sont bien reçues
-    const { titreTicket, dateHeure, nomClient, descriptionTicket, etapesSuivies, fournisseurLecteurs, posteServeur, sauvegardeDonnees, versionInstallee, typeLecteurs } = ticketData;
+    console.log(req.body); // Vérifie si les données sont bien reçues
+
+    const { titreTicket, dateHeure, nomClient, descriptionTicket, etapesSuivies } = ticketData;
 
     const query = `
       INSERT INTO tickets (
@@ -52,26 +53,31 @@ app.post('/create-ticket', async (req, res) => {
       dateHeure,
       nomClient,
       descriptionTicket,
-      etapesSuivies    
+      etapesSuivies
     ];
 
-    db.query(query, values, (err, results) => {
-      if (err) {
-        console.error("Erreur d'insertion:", err);
-        res.status(500).send("Erreur serveur");
-      } else {
-        res.status(200).json(results);
-      }
+    // Utilisation d'un promisify pour exécuter la requête de manière asynchrone
+    await new Promise((resolve, reject) => {
+      db.query(query, values, (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      });
     });
 
-   
+    res.status(200).json({ message: "Ticket créé avec succès" });
+
   } catch (error) {
     console.error("Erreur serveur:", error);
     res.status(500).json({ error: "Erreur interne du serveur" });
   }
 });
 
+
 app.get('/tickets', (req, res) => {
+  console.log('Requête reçue:', req.url); // Exemple d'utilisation de req
   const sql = 'SELECT * FROM tickets';
   db.query(sql, (err, results) => {
     if (err) {
@@ -82,6 +88,7 @@ app.get('/tickets', (req, res) => {
     }
   });
 });
+
 
 // Démarrer le serveur
 app.listen(port, () => {

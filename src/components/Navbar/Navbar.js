@@ -16,7 +16,7 @@ const Navbar = () => {
               <Link className="nav-link" to="/creation-ticket">Création de Ticket</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="">liste des contrats</Link>
+              <Link className="nav-link" to="/tickets">Liste des tickets</Link>
             </li>
             {/* D'autres liens si nécessaires */}
           </ul>
