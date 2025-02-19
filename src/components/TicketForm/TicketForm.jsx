@@ -66,10 +66,25 @@ const TicketForm = () => {
     }
   };
 
+  const copyToClipboard = () => {
+    const ticketText = `
+      Titre: ${formData.titreTicket}
+      Date et Heure: ${formData.dateHeure}
+      Client: ${formData.nomClient}
+      Description: ${formData.descriptionTicket}
+      Étapes suivies: ${formData.etapesSuivies}
+    `;
+    navigator.clipboard.writeText(ticketText).then(() => {
+      alert('Ticket copié dans le presse-papier');
+    });
+  };
+
   return (
-    <div className="ticket-form">
-      <h2>Création de Ticket</h2>
-      <form onSubmit={handleSubmit}>
+  <div>
+    <h2 className="title">Création de Ticket</h2> 
+    <div className="ticket-form-container">
+      
+      <form onSubmit={handleSubmit} className="ticket-form">
         <div className="mb-3">
           <label htmlFor="titreTicket" className="form-label">Titre du ticket</label>
           <input
@@ -141,7 +156,20 @@ const TicketForm = () => {
           </div>
         </div>
       </form>
+      {/* Visionneuse du ticket */}
+      <div className="ticket-viewer">
+        <h3>Prévisualisation du Ticket</h3>
+        <pre>{`
+          Titre: ${formData.titreTicket}
+          Date et Heure: ${formData.dateHeure}
+          Client: ${formData.nomClient}
+          Description: ${formData.descriptionTicket}
+          Étapes suivies: ${formData.etapesSuivies}
+        `}</pre>
+        <button onClick={copyToClipboard} className="btn btn-primary">Copier dans le CRM</button>
+      </div>
     </div>  
+  </div>  
   );
 };
 
